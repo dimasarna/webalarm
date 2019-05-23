@@ -1,52 +1,204 @@
 <!DOCTYPE html>
-<html>
+<html >
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
+        @import url('https://fonts.googleapis.com/css?family=Orbitron&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+        body {font-family: 'Roboto', sans-serif;}
+
         .center {
             background-color: white;
-            margin-left: auto;
-            margin-right: auto;
-            width: 80%;
+            margin: auto;
+            width: 90%;
+            overflow: auto;
             padding: 35px;
         }
-        
-        .alarm {
-            display: inline-block;
-            width: 90%;
-            border: solid black;
-            padding: 10px;
-            font-size: 32px;
-            text-align: center;
+
+        /* Full-width input fields */
+        input[type=text], input[type=password],
+        input[type=number] {
+          width: 100%;
+          padding: 12px 20px;
+          margin: 8px 0;
+          display: inline-block;
+          border: 1px solid #ccc;
+          box-sizing: border-box;
         }
 
-        .button {
-            position: relative;
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 12px 18px;
-            text-align: center;
-            font-size: 14px;
-            margin-left: auto;
-            margin-right: auto;
-            opacity: 1;
-            transition: 0.3s;
-            display: block;
-            text-decoration: none;
-            cursor: pointer;
+        /* Set a style for all buttons */
+        button {
+          font-family: 'Roboto', sans-serif;
+          background-color: #4CAF50;
+          color: white;
+          padding: 10px 18px;
+          margin: 8px 0;
+          border: none;
+          cursor: pointer;
+          width: auto;
         }
 
-        .button:hover {opacity: 0.8}
+        button:hover {
+          opacity: 0.8;
+        }
+
+        /* Extra styles for the cancel button */
+        .cancelbtn {
+          background-color: #f44336;
+        }
+
+        /* Center the image and position the close button */
+        .imgcontainer {
+          text-align: center;
+          margin: 24px 0 12px 0;
+          position: relative;
+        }
+
+        img.avatar {
+          width: 40%;
+          border-radius: 50%;
+        }
+
+        .container {
+          padding: 16px;
+        }
+
+        span.psw {
+          float: right;
+          padding-top: 16px;
+        }
+
+        /* The Modal (background) */
+        .modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+          padding-top: 60px;
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+          background-color: #fefefe;
+          margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+          border: 1px solid #888;
+          width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button (x) */
+        .close {
+          position: absolute;
+          margin-top: -5px;
+          right: 25px;
+          top: 0;
+          color: #000;
+          font-size: 35px;
+          font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+          color: red;
+          cursor: pointer;
+        }
+
+        /* Add Zoom Animation */
+        .animate {
+          -webkit-animation: animatezoom 0.6s;
+          animation: animatezoom 0.6s
+        }
+
+        @-webkit-keyframes animatezoom {
+          from {-webkit-transform: scale(0)} 
+          to {-webkit-transform: scale(1)}
+        }
+          
+        @keyframes animatezoom {
+          from {transform: scale(0)} 
+          to {transform: scale(1)}
+        }
+
+        /* Change styles for span and cancel button on extra small screens */
+        @media screen and (max-width: 300px) {
+          button {
+             width: 100%;
+          }
+        }
         </style>
     </head>
     <body style="background-color: #f0f0f0">
         <div class="center">
-            <p id="p1" style="margin: 0; padding: 0; text-align: center; font-size: 42px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold;"></p>
-            <p id="p2" style="margin: 0; padding: 0; text-align: center; font-size: 32px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"></p>
+            <p id="p1" style="margin: 0; padding: 0; text-align: center; font-family: 'Orbitron', sans-serif; font-size: 42px; font-weight: bold;"></p>
+            <p id="p2" style="margin: 0; padding: 0; text-align: center; font-size: 32px;"></p>
             <br><br>
-            <div style="width: 100%; margin: auto;"><button class="button">Set Alarm</button></div>
+            <!-- Button to open the modal login form -->
+            <button id="set_alarm" onclick="document.getElementById('id01').style.display='block'" style="display: block; width:auto; margin-left:auto; margin-right: auto;">Set Alarm</button>
         </div>
+        <br><br>
+        <div id="alarm-container" class="center" style="display: none;">
+            <p style="margin: 0; padding: 0; text-align: center;">Alarm</p><br>
+            <p id="alarm" style="margin: 0; padding: 0; text-align: center; font-family: 'Orbitron', sans-serif; font-size: 32px;"></p><br>
+            <button type="button" class="cancelbtn" style="display: block; width:auto; margin-left:auto; margin-right: auto;" onclick="stopAlarm();">Stop Alarm</button>
+        </div>
+        <div id="id01" class="modal">
+          
+          <div class="modal-content animate">
+            <div class="imgcontainer">
+              <h2>Edit Alarm</h2>
+              <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+            </div>
+
+            <div class="container">
+              <label for="hrs"><b>Hours</b></label>
+              <input type="number" id="hrs" min="1" max="24" required>
+
+              <label for="mins"><b>Minutes</b></label>
+              <input type="number" id="mins" min="0" max="59" required>
+              
+              <br>
+              <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+              <button onclick="addAlarm();">Start</button>
+            </div>
+          </div>
+        </div>
+        <audio id="audio">
+            <source src="audio.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
         <script>
+        var alarm_hrs;
+        var alarm_mins;
+        function checkNum(a) {
+            if (a < 10) {
+                return "0" + a;
+            } else {
+                return a;
+            }
+        }
+        function addAlarm() {
+            var input_hrs = document.getElementById('hrs');
+            var input_mins = document.getElementById('mins');
+            alarm_hrs = input_hrs.value;
+            alarm_mins = input_mins.value;
+            document.getElementById('alarm').innerHTML = checkNum(alarm_hrs) + ":" + checkNum(alarm_mins);
+            document.getElementById('id01').style.display='none';
+            document.getElementById('set_alarm').style.display='none';
+            document.getElementById('alarm-container').style.display='block';
+        }
+        function stopAlarm () {
+            alarm_hrs = 0;
+            alarm_mins = 0;
+            document.getElementById('alarm-container').style.display='none';
+            document.getElementById('set_alarm').style.display='block';
+            document.getElementById('audio').pause();
+        }
         setInterval(function alarm(){
             var now = new Date();
             var hours = checkNum(now.getHours());
@@ -55,15 +207,11 @@
             document.getElementById('p1').innerHTML = hours + ":" + minutes + ":" + seconds;
             var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
             var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-            document.getElementById('p2').innerHTML = days[now.getDay()] + " - " + months[now.getMonth()] + " " + now.getDate() + "." + now.getFullYear();
-        }, 500);
-        function checkNum(a) {
-            if (a < 10) {
-                return "0" + a;
-            } else {
-                return a;
+            document.getElementById('p2').innerHTML = days[now.getDay()] + " - " + months[now.getMonth()] + " " + now.getDate() + " . " + now.getFullYear();
+            if (now.getHours() == alarm_hrs && now.getMinutes() == alarm_mins) {
+                document.getElementById('audio').play();
             }
-        }
+        }, 500);
         </script>
     </body>
 </html>
